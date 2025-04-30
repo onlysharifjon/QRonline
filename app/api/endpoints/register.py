@@ -17,26 +17,36 @@ async def register_image(
     first_name: str = Form(...),
     last_name: str = Form(...),
     middle_name: str = Form(None),
-    file: UploadFile = File(...),
+    country: str = Form("..."),
+    birth_date: str = Form(...),
+    passport: str = Form(...),
+    phone: str = Form(...),
+    image: UploadFile = File(...),
     db: Session = Depends(get_db)
 ):
     uid = str(uuid4())
-    ext = file.filename.split(".")[-1]
+    ext = image.filename.split(".")[-1]
     file_name = f"{uid}.{ext}"
     file_path = UPLOAD_DIR / file_name
 
     with open(file_path, "wb") as f:
-        f.write(await file.read())
+        f.write(await image.read())
 
     # QR yaratish
-    qr_link = f"http://localhost:8000/view/{uid}"
+    qr_link = f"http://qr.abdugafforov.uz:8000/view/{uid}"  # This represents the unique ID link for the QR code
     qr_img = qrcode.make(qr_link)
     qr_img.save(UPLOAD_DIR / f"{uid}_qr.png")
 
     image_data = ImageCreate(
-        first_name=first_name,
-        last_name=last_name,
-        middle_name=middle_name
+        first_name = first_name,
+        last_name = last_name,
+        middle_name = middle_name,
+        country = country,
+        birth_date = birth_date,
+        passport = passport,
+        phone = phone,
+        qr_image = f"/media/{uid}_qr.png",
+        image_path = str(file_path)
     )
 
     image_repo = ImageRepository(db)

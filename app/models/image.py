@@ -12,5 +12,13 @@ class Image(Base):
     first_name = Column(String, nullable=False)
     last_name = Column(String, nullable=False)
     middle_name = Column(String, nullable=True)
+    country = Column(String, nullable=False)
+    birth_date = Column(String, nullable=False)
+    passport = Column(String, nullable=False)
+    phone = Column(String, nullable=False)
+    id_badge = Column(String, nullable=False)
     image_path = Column(String, nullable=False)
+    qr_image = Column(String, nullable=False)
+
+
     created_at = Column(DateTime(timezone=True), server_default=func.now())
