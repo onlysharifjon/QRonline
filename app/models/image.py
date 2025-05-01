@@ -22,3 +22,11 @@ class Image(Base):
 
 
     created_at = Column(DateTime(timezone=True), server_default=func.now())
+
+
+class PDFDocument(Base):
+    __tablename__ = "pdf_documents"
+
+    id = Column(String, primary_key = True)
+    filename = Column(String, nullable = False)
+    file_path = Column(String, nullable = False)

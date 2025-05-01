@@ -3,14 +3,55 @@ from sqlalchemy.orm import Session
 from uuid import uuid4
 from pathlib import Path
 import qrcode
-from app.schemas.image import ImageCreate, ImageOut
+from app.schemas.image import *
 from app.repositories.image_repository import ImageRepository
 from app.core.database import get_db
-
+from  ...models.image import *
 router = APIRouter()
 
 UPLOAD_DIR = Path("media")
 UPLOAD_DIR.mkdir(parents=True, exist_ok=True)
+import os
+
+@router.post('/pdf_upload', response_model = PDFResponse)
+async def add_pdf(
+        file: UploadFile = File(...),
+        id: Optional[str] = Form(None),
+        db: Session = Depends(get_db)
+):
+    # Generate ID if not provided
+    document_id = id
+
+    # Save the uploaded file
+    upload_dir = "uploads/pdfs"
+    os.makedirs(upload_dir, exist_ok = True)
+
+    file_path = os.path.join(upload_dir, f"{document_id}_{file.filename}")
+
+    # Write the file to disk
+    with open(file_path, "wb") as buffer:
+        contents = await file.read()
+        buffer.write(contents)
+
+    # Create database entry
+    pdf_document = PDFDocument(
+        id = document_id,
+        filename = file.filename,
+        file_path = file_path
+    )
+
+    # Add to database
+    db.add(pdf_document)
+    db.commit()
+    db.refresh(pdf_document)
+
+    # Return response with only ID
+    return PDFResponse(
+        id = pdf_document.id
+    )
+    
+    
+    
 
 @router.post("/register/", response_model=ImageOut)
 async def register_image(

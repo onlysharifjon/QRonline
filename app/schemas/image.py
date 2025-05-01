@@ -22,3 +22,15 @@ class ImageOut(BaseModel):
 
     class Config:
         orm_mode = True
+
+
+class PDFResponse(BaseModel):
+    id: str
+
+    class Config:
+        orm_mode = True
+
+
+# Pydantic model for request
+class PDFRequest(BaseModel):
+    id: Optional[str] = None
