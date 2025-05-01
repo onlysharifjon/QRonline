@@ -1,3 +1,6 @@
+from typing import Optional
+
+from fastapi import Form
 from pydantic import BaseModel
 from datetime import datetime
 
@@ -15,7 +18,7 @@ class ImageOut(BaseModel):
     id: str
     image_path: str
     qr_code_url: str
-    created_at: datetime
+    created_at: Optional[datetime] = None
 
     class Config:
         orm_mode = True
