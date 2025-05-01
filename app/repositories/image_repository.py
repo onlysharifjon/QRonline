@@ -1,3 +1,5 @@
+import uuid
+
 from sqlalchemy.orm import Session
 from app.models.image import Image
 from app.schemas.image import ImageCreate
