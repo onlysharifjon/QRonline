@@ -16,7 +16,7 @@ app.mount("/media", StaticFiles(directory="media"), name="media")
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # yoki ["http://localhost:5173"] — xavfsizroq
+    allow_origins=["*","http://localhost:5173"],  # yoki ["http://localhost:5173"] — xavfsizroq
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
