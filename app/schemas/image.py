@@ -1,5 +1,4 @@
 from typing import Optional
-
 from fastapi import Form
 from pydantic import BaseModel
 from datetime import datetime
@@ -7,12 +6,15 @@ from datetime import datetime
 class ImageCreate(BaseModel):
     first_name: str
     last_name: str
-    middle_name: str | None = None
-    country: str  # Bu maydon etishmayapti
-    birth_date: str  # Bu maydon etishmayapti
-    passport: str  # Bu maydon etishmayapti
-    phone: str  # Bu maydon etishmayapti
-    qr_image: str  # Bu maydon etishmayapti
+    middle_name: Optional[str] = None
+    country: str
+    birth_date: str
+    passport: str
+    phone: str
+    qr_image: str
+    image_path: str
+    id_badge: Optional[str] = None
+
 
 class ImageOut(BaseModel):
     id: str
@@ -21,16 +23,13 @@ class ImageOut(BaseModel):
     created_at: Optional[datetime] = None
 
     class Config:
-        orm_mode = True
+        from_attributes = True
 
+class PDFRequest(BaseModel):
+    id: Optional[str] = None
 
 class PDFResponse(BaseModel):
     id: str
 
     class Config:
-        orm_mode = True
-
-
-# Pydantic model for request
-class PDFRequest(BaseModel):
-    id: Optional[str] = None
+        from_attributes = True

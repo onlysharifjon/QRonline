@@ -1,9 +1,7 @@
 from sqlalchemy import Column, String, DateTime
 from sqlalchemy.sql import func
-from sqlalchemy.ext.declarative import declarative_base
+from app.core.database import Base
 import uuid
-
-Base = declarative_base()
 
 class Image(Base):
     __tablename__ = "images"
@@ -16,11 +14,9 @@ class Image(Base):
     birth_date = Column(String, nullable=False)
     passport = Column(String, nullable=False)
     phone = Column(String, nullable=False)
-    id_badge = Column(String, nullable=False)
+    id_badge = Column(String, default=lambda: str(uuid.uuid4()), nullable=False)
     image_path = Column(String, nullable=False)
     qr_image = Column(String, nullable=False)
-
-
     created_at = Column(DateTime(timezone=True), server_default=func.now())
 
 
